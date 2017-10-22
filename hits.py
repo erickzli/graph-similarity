@@ -1,13 +1,14 @@
 import numpy as np
 
-def hits(a, k=10):
+def hits(a, k=40, normalize=True):
     '''
     Use HITS algorithm to find the authority and hub scores for each vertix.
 
     Parameters
     ----------
     a: a numpy matrix of vertices relation
-    k: number of steps, default == 40
+    k: number of steps, default: 40
+    normalize: determine whether the scores should be normalized, default: True
 
     Return
     ------
@@ -22,11 +23,15 @@ def hits(a, k=10):
     hubScore = np.ones(numOfVertices, dtype=np.float64)
 
     for i in range(k):
+        # update the authority scores, and then normalize them
         authorityScore = np.dot(aT, hubScore)
-        authorityScore = normalization(authorityScore)
+        if normalize:
+            authorityScore = normalization(authorityScore)
 
+        # update the hub scores, and then normalize them
         hubScore = np.dot(a, authorityScore)
-        hubScore = normalization(hubScore)
+        if normalize:
+            hubScore = normalization(hubScore)
 
     return authorityScore, hubScore
 
@@ -44,14 +49,13 @@ def normalization(score):
     a numpy array of normalized score vector
     '''
 
+    # the factor used for normalization
     denominator = 0.0
 
     for i in score:
         denominator += (i ** 2)
-        #print(i)
 
     denominator = denominator ** 0.5
-
     score = score / denominator
 
     return score
