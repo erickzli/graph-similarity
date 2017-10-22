@@ -1,13 +1,12 @@
-''' Set the authority and the hub values of all the vertex.
-    vertex.authority = 0
-    vertex.hub = 0
-    
-    Iteration with n steps:
-        Add all the children's authority, assign the value to vertex.authority
-        vertex.authority += children.authority
-        
-        Add all the children's hub, assign the value to vertex.hub
-        vertex.hub += children.hub
-    
-    (Version without normalization.
-'''
+import hits
+import numpy as np
+
+a = np.array([[0., 0., 1., 0.], [0., 0., 1., 0.], [0., 0., 0., 1.], [0., 0., 0., 0.]])
+
+ascore = 0.0
+hscore = 0.0
+
+ascore, hscore = hits.hits(a, 40)
+
+print(ascore)
+print(hscore)

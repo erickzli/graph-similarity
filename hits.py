@@ -1,6 +1,6 @@
 import numpy as np
 
-def hits(a, k=40):
+def hits(a, k=10):
     '''
     Use HITS algorithm to find the authority and hub scores for each vertix.
 
@@ -13,41 +13,22 @@ def hits(a, k=40):
     ------
     the numpy array of authority scores and hub scores
     '''
-    
+
     # Get the number of vertices in this graph
-    numOfVertices = np.size(a) ** 0.5
+    numOfVertices = int(np.size(a) ** 0.5)
     aT = np.transpose(a)
 
     authorityScore = np.ones(numOfVertices, dtype=np.float64)
     hubScore = np.ones(numOfVertices, dtype=np.float64)
 
     for i in range(k):
-        authorityScore = updateScore(aT, authorityScore)
+        authorityScore = np.dot(aT, hubScore)
         authorityScore = normalization(authorityScore)
 
-        hubScore = updateScore(a, authorityScore)
+        hubScore = np.dot(a, authorityScore)
         hubScore = normalization(hubScore)
 
     return authorityScore, hubScore
-
-
-def updateScore(a, prevOtherTypeScore):
-    '''
-    Update a type (autho or hub) of score for the vertices.
-
-    Parameters
-    ----------
-    a: numpy matrix of vertices relation
-    prevHubScore: numpy array of previous the other type of scores
-
-    Return
-    ------
-    a numpy array of updated this type of scores
-    '''
-
-    updatedThisScore = np.dot(a, prevOtherTypeScore)
-
-    return updatedThisScore
 
 
 def normalization(score):
@@ -67,8 +48,10 @@ def normalization(score):
 
     for i in score:
         denominator += (i ** 2)
+        #print(i)
 
     denominator = denominator ** 0.5
-    score /= denominator
+
+    score = score / denominator
 
     return score
