@@ -1,17 +1,40 @@
 import hits
 import numpy as np
 
-a = np.array([[0., 1., 1., 1.], \
-              [0., 0., 1., 1.], \
-              [1., 0., 0., 1.], \
-              [0., 0., 0., 1.]])
+''' Two similar graphs with different indices'''
+a = np.array([[0., 1., 1., 0.], \
+              [0., 0., 0., 0.], \
+              [0., 1., 0., 1.], \
+              [1., 1., 0., 1.]])
 
-ascore = 0.0
-hscore = 0.0
-step = 1
-normalize = True
+# b = np.array([[0., 1., 1., 0.], \
+#               [0., 0., 0., 0.], \
+#               [0., 1., 0., 1.], \
+#               [1., 1., 0., 1.]])
 
-ascore, hscore = hits.hits(a, step, normalize)
+b = np.array(([[1., 1., 1., 0.], \
+               [0., 0., 1., 1.], \
+               [0., 0., 0., 0.], \
+               [1., 0., 1., 0.]]))
 
-print('Authority score are {0} with {1} step(s)'.format(ascore, step))
-print('Hub score are {0} with {1} step(s)'.format(hscore, step))
+# ascoreA = 0.0
+# hscoreA = 0.0
+# step = 40
+# normalize = True
+#
+# ascoreA, hscoreA = hits.hits(a, step, normalize)
+#
+# ascoreB = 0.0
+# hscoreB = 0.0
+# # step = 1
+# # normalize = True
+#
+# ascoreB, hscoreB = hits.hits(b, step, normalize)
+
+# print('Authority score for A are {0} with {1} step(s)'.format(ascoreA, step))
+# print('Hub score for A are {0} with {1} step(s)'.format(hscoreA, step))
+#
+# print('Authority score for B are {0} with {1} step(s)'.format(ascoreB, step))
+# print('Hub score for B are {0} with {1} step(s)'.format(hscoreB, step))
+
+hits.comparison(a, b)

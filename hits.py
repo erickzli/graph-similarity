@@ -1,6 +1,17 @@
 import numpy as np
 
 def comparison(a, b):
+    '''
+    Compare two graphs whether they are similar.
+    Print out the scores and indicate whether they are similar.
+
+    Parameters
+    ----------
+    a: a numpy array of graph A
+    b: a numpy array of graph B
+
+    '''
+
     authorityA, hubA = hits(a)
     authorityB, hubB = hits(b)
 
@@ -9,6 +20,23 @@ def comparison(a, b):
 
     hubA = np.sort(hubA)
     hubB = np.sort(hubB)
+
+    authorityEqual = np.allclose(authorityA, authorityB)
+    hubEqual = np.allclose(hubA, hubB)
+
+    print('Authority score for A are {0} with {1} step(s)'.format(authorityA, 40))
+    print('Hub score for A are {0} with {1} step(s)'.format(hubA, 40))
+
+    print('Authority score for B are {0} with {1} step(s)'.format(authorityB, 40))
+    print('Hub score for B are {0} with {1} step(s)'.format(hubB, 40))
+
+    if authorityEqual and hubEqual:
+        print('Similar!!')
+    else:
+        print('Opss...')
+
+    return
+
 
 def hits(a, k=40, normalize=True):
     '''
@@ -23,6 +51,7 @@ def hits(a, k=40, normalize=True):
     Return
     ------
     the numpy array of authority scores and hub scores
+
     '''
 
     # Get the number of vertices in this graph
@@ -57,6 +86,7 @@ def normalization(score):
     Return
     ------
     a numpy array of normalized score vector
+    
     '''
 
     # the factor used for normalization
