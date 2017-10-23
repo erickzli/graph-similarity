@@ -1,5 +1,15 @@
 import numpy as np
 
+def comparison(a, b):
+    authorityA, hubA = hits(a)
+    authorityB, hubB = hits(b)
+
+    authorityA = np.sort(authorityA)
+    authorityB = np.sort(authorityB)
+
+    hubA = np.sort(hubA)
+    hubB = np.sort(hubB)
+
 def hits(a, k=40, normalize=True):
     '''
     Use HITS algorithm to find the authority and hub scores for each vertix.
