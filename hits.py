@@ -21,6 +21,8 @@ def comparison(a, b):
     hubA = np.sort(hubA)
     hubB = np.sort(hubB)
 
+    # With tolerance, since the same numbers can be calculated with error by
+    #  using different approaches.
     authorityEqual = np.allclose(authorityA, authorityB)
     hubEqual = np.allclose(hubA, hubB)
 
@@ -86,7 +88,7 @@ def normalization(score):
     Return
     ------
     a numpy array of normalized score vector
-    
+
     '''
 
     # the factor used for normalization
