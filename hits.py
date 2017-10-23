@@ -7,7 +7,7 @@ def hits(a, k=40, normalize=True):
     Parameters
     ----------
     a: a numpy matrix of vertices relation
-    k: number of steps, default: 40
+    k: number of steps, default: 40 steps
     normalize: determine whether the scores should be normalized, default: True
 
     Return
