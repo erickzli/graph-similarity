@@ -12,6 +12,12 @@ def comparison(a, b):
 
     '''
 
+    # Obviously, if the dimensions of the two graphs are different, they cannot
+    #  be similar...
+    if np.size(a) != np.size(b):
+        print('Opss...')
+        return
+
     authorityA, hubA = hits(a)
     authorityB, hubB = hits(b)
 
