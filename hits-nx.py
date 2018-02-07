@@ -13,9 +13,9 @@ G2 = nx.gnm_random_graph(n, m)
 A = np.asarray(nx.to_numpy_matrix(G1))
 B = np.asarray(nx.to_numpy_matrix(G2))
 
-hits.comparison(A, B, steps=50, normalize=True)
+hits.comparison(A, B, steps=50, normalize=True, lapse=True)
 
-if plot:
-    plt.subplot(121)
-    nx.draw(G2, with_labels=True, font_weight='bold')
-    plt.show()
+# if plot:
+#     plt.subplot(121)
+#     nx.draw(G2, with_labels=True, font_weight='bold')
+#     plt.show()

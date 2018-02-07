@@ -1,6 +1,7 @@
 import numpy as np
+import datetime
 
-def comparison(a, b, steps=40, normalize=True):
+def comparison(a, b, steps=40, normalize=True, lapse=False):
     '''
     Compare two graphs whether they are similar.
     Print out the scores and indicate whether they are similar.
@@ -11,17 +12,28 @@ def comparison(a, b, steps=40, normalize=True):
     b: a numpy array of graph B
     steps: number of steps; default: 40
     normalize: determine whether the scores should be normalized; default: True
+    lapse: determine the time lapsed during a function call; default: False
 
     '''
 
+    t1 = 0.0
+    t2 = 0.0
+    uptime = 0.0
     # Obviously, if the dimensions of the two graphs are different, they cannot
     #  be similar...
     if np.size(a) != np.size(b):
         print('They should have had the same size')
         return
 
-    authorityA, hubA = hits(a, steps, normalize)
-    authorityB, hubB = hits(b, steps, normalize)
+    if lapse:
+        t1 = datetime.datetime.now()
+        authorityA, hubA = hits(a, steps, normalize)
+        authorityB, hubB = hits(b, steps, normalize)
+        t2 = datetime.datetime.now()
+        uptime = t2 - t1
+    else:
+        authorityA, hubA = hits(a, steps, normalize)
+        authorityB, hubB = hits(b, steps, normalize)
 
     authorityA = np.sort(authorityA)
     authorityB = np.sort(authorityB)
@@ -45,7 +57,10 @@ def comparison(a, b, steps=40, normalize=True):
     else:
         print('Different')
 
-    return
+    if lapse:
+        return uptime
+    else:
+        return
 
 
 def hits(a, steps, normalize):
