@@ -1,6 +1,6 @@
 import numpy as np
 
-def comparison(a, b):
+def comparison(a, b, steps=40, normalize=True):
     '''
     Compare two graphs whether they are similar.
     Print out the scores and indicate whether they are similar.
@@ -9,17 +9,19 @@ def comparison(a, b):
     ----------
     a: a numpy array of graph A
     b: a numpy array of graph B
+    steps: number of steps; default: 40
+    normalize: determine whether the scores should be normalized; default: True
 
     '''
 
     # Obviously, if the dimensions of the two graphs are different, they cannot
     #  be similar...
     if np.size(a) != np.size(b):
-        print('Opss...')
+        print('They should have had the same size')
         return
 
-    authorityA, hubA = hits(a)
-    authorityB, hubB = hits(b)
+    authorityA, hubA = hits(a, steps, normalize)
+    authorityB, hubB = hits(b, steps, normalize)
 
     authorityA = np.sort(authorityA)
     authorityB = np.sort(authorityB)
@@ -32,29 +34,29 @@ def comparison(a, b):
     authorityEqual = np.allclose(authorityA, authorityB)
     hubEqual = np.allclose(hubA, hubB)
 
-    print('Authority score for A are {0} with {1} step(s)'.format(authorityA, 40))
-    print('Hub score for A are {0} with {1} step(s)'.format(hubA, 40))
+    print('Authority score for A are {0} with {1} step(s)'.format(authorityA, steps))
+    print('Hub score for A are {0} with {1} step(s)'.format(hubA, steps))
 
-    print('Authority score for B are {0} with {1} step(s)'.format(authorityB, 40))
-    print('Hub score for B are {0} with {1} step(s)'.format(hubB, 40))
+    print('Authority score for B are {0} with {1} step(s)'.format(authorityB, steps))
+    print('Hub score for B are {0} with {1} step(s)'.format(hubB, steps))
 
     if authorityEqual and hubEqual:
         print('Similar!!')
     else:
-        print('Opss...')
+        print('Different')
 
     return
 
 
-def hits(a, k=40, normalize=True):
+def hits(a, steps, normalize):
     '''
     Use HITS algorithm to find the authority and hub scores for each vertix.
 
     Parameters
     ----------
     a: a numpy matrix of vertices relation
-    k: number of steps, default: 40 steps
-    normalize: determine whether the scores should be normalized, default: True
+    steps: number of steps
+    normalize: determine whether the scores should be normalized
 
     Return
     ------
@@ -69,9 +71,9 @@ def hits(a, k=40, normalize=True):
     authorityScore = np.ones(numOfVertices, dtype=np.float64)
     hubScore = np.ones(numOfVertices, dtype=np.float64)
 
-    for i in range(k):
+    for i in range(steps):
         # update the authority scores, and then normalize them
-        authorityScore = np.dot(aT, hubScore)
+        authorityScore = np.dot(a, hubScore)
         if normalize:
             authorityScore = normalization(authorityScore)
 
@@ -99,9 +101,8 @@ def normalization(score):
 
     # the factor used for normalization
     denominator = 0.0
-
     for i in score:
-        denominator += (i ** 2)
+        denominator += (i ** 2.0)
 
     denominator = denominator ** 0.5
     score = score / denominator

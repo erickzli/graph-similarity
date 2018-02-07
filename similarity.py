@@ -17,6 +17,8 @@ b = np.array(([[1., 1., 1., 0.], \
                [0., 0., 0., 0.], \
                [1., 0., 1., 0.]]))
 
+print(a)
+
 # ascoreA = 0.0
 # hscoreA = 0.0
 # step = 40
@@ -37,4 +39,4 @@ b = np.array(([[1., 1., 1., 0.], \
 # print('Authority score for B are {0} with {1} step(s)'.format(ascoreB, step))
 # print('Hub score for B are {0} with {1} step(s)'.format(hscoreB, step))
 
-hits.comparison(a, b)
+hits.comparison(a, b, steps=50, normalize=True)
