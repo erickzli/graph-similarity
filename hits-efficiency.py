@@ -4,11 +4,14 @@ import numpy as np
 import datetime
 import hits
 
-def effe(start, end, printTimes=True, plot=True):
+def effe(start, end, step, printTimes=True, plot=True):
+    '''
+    calculate time used for different nodes in graphs using HITS algorithm.
+    '''
     n = []
     t = []
 
-    for loop in range(start, end+1):
+    for loop in range(start, end+1, step):
         G = nx.gnm_random_graph(loop, loop*2)
         G = np.asarray(nx.to_numpy_matrix(G))
 
@@ -23,7 +26,7 @@ def effe(start, end, printTimes=True, plot=True):
             t.append(uptime)
 
         if printTimes:
-            print('{0} nodes utilized {1}'.format(loop, uptime))
+            print('{0} nodes utilized {1} ms'.format(loop, uptime))
 
     if plot:
         plt.plot(n, t)
@@ -33,4 +36,4 @@ def effe(start, end, printTimes=True, plot=True):
         plt.show()
 
 
-effe(5, 1000)
+effe(5, 1000, 10)
