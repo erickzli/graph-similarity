@@ -1,3 +1,3 @@
 import hits
 
-effe(5, 1000, 10)
+efficiency(5, 1000, 10)

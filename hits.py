@@ -1,7 +1,8 @@
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-import datetime
+import time
+from scipy import spatial
 
 def comparison(a, b, steps=40, normalize=True, lapse=False):
     '''
@@ -28,10 +29,10 @@ def comparison(a, b, steps=40, normalize=True, lapse=False):
         return
 
     if lapse:
-        t1 = datetime.datetime.now()
+        t1 = time.time()
         authorityA, hubA = hits(a, steps, normalize)
         authorityB, hubB = hits(b, steps, normalize)
-        t2 = datetime.datetime.now()
+        t2 = time.time()
         uptime = t2 - t1
     else:
         authorityA, hubA = hits(a, steps, normalize)
@@ -64,7 +65,8 @@ def comparison(a, b, steps=40, normalize=True, lapse=False):
     else:
         return
 
-def effe(start, end, step, printTimes=True, plot=True):
+
+def efficiency(start, end, step, printTimes=True, plot=True):
     '''
     calculate time used for different nodes in graphs using HITS algorithm.
     '''
@@ -95,8 +97,54 @@ def effe(start, end, step, printTimes=True, plot=True):
         plt.ylabel('Time used')
         plt.show()
 
+def random_distance(nodes, edges, sampleSize=50, sortby='authority'):
+    if (not isinstance(nodes, int)) or (not isinstance(edges, int)):
+        exit('Error: Not both nodes and edges are integers.')
 
-def hits(a, steps, normalize):
+    if nodes < 5:
+        exit('Error: nodes are too few.')
+
+    if edges < nodes:
+        exit('Error: edges are fewer than nodes.')
+
+    auth_list = []
+    hub_list = []
+
+    base_list = []
+    samples_list = []
+
+    distances_list = []
+    topFiveDist_list = []
+
+    G = nx.gnm_random_graph(nodes, edges)
+    G = np.asarray(nx.to_numpy_matrix(G))
+    auth, hub = hits(G)
+
+    for i in range(sampleSize):
+        Gi = nx.gnm_random_graph(nodes, edges)
+        Gi = np.asarray(nx.to_numpy_matrix(Gi))
+        authi, hubi = hits(Gi)
+
+        auth_list.append(authi)
+        hub_list.append(hubi)
+
+    # sort by which index
+    if sortby == 'authority':
+        base_list.append(np.sort(auth))
+        for i in range(sampleSize):
+            samples_list.append(np.sort(auth_list[i]))
+    else:
+        base_list.append(np.sort(hub))
+        for i in range(sampleSize):
+            samples_list.append(np.sort(hub_list[i]))
+
+    for i in range(sampleSize):
+        distances_list.append(spatial.distance.cityblock(base_list, samples_list[i]))
+
+    return distances_list
+
+
+def hits(a, steps=100, normalize=True):
     '''
     Use HITS algorithm to find the authority and hub scores for each vertix.
 
