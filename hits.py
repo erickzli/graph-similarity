@@ -97,7 +97,7 @@ def efficiency(start, end, step, printTimes=True, plot=True):
         plt.ylabel('Time used')
         plt.show()
 
-def random_distance(nodes, edges, sampleSize=50, sortby='authority'):
+def random_distance(nodes, edges, sampleSize=100, sortby='authority'):
     if (not isinstance(nodes, int)) or (not isinstance(edges, int)):
         exit('Error: Not both nodes and edges are integers.')
 

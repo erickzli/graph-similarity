@@ -2,12 +2,13 @@ import hits
 import matplotlib.pyplot as plt
 import numpy as np
 
-maxnode = 300
+start = 10
+maxnode = 1000
+step = 10
 dist_list = []
-nodes = np.arange(maxnode-10)
-nodes = nodes + 10
+nodes = np.arange(start, maxnode, step)
 
-for i in range(10,maxnode):
+for i in range(start, maxnode, step):
     dist = hits.random_distance(i,2*i)
     dist_mean = np.mean(dist)
     dist_list.append(dist_mean)
