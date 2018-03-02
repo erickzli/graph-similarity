@@ -97,7 +97,20 @@ def efficiency(start, end, step, printTimes=True, plot=True):
         plt.ylabel('Time used')
         plt.show()
 
-def random_distance(nodes, edges, sampleSize=100, sortby='authority'):
+def random_distance(nodes, edges, sampleSize=100, sortBy='authority', distType='Manhattan'):
+    '''
+    create random graphs and get the distance between the sample and base
+
+    Parameters
+    ----------
+    nodes: number of nodes
+    edges: number of edges
+    sampleSize: size of samples; default=100
+    sortBy: the score that is used for sorting; default='authority'
+    distType: type of distance used for dist calculation;
+                default='Manhattan'
+
+    '''
     if (not isinstance(nodes, int)) or (not isinstance(edges, int)):
         exit('Error: Not both nodes and edges are integers.')
 
@@ -129,17 +142,24 @@ def random_distance(nodes, edges, sampleSize=100, sortby='authority'):
         hub_list.append(hubi)
 
     # sort by which index
-    if sortby == 'authority':
-        base_list.append(np.sort(auth))
+    if sortBy == 'authority':
+        base_list = np.sort(auth)
         for i in range(sampleSize):
             samples_list.append(np.sort(auth_list[i]))
     else:
-        base_list.append(np.sort(hub))
+        base_list = np.sort(hub)
         for i in range(sampleSize):
             samples_list.append(np.sort(hub_list[i]))
 
     for i in range(sampleSize):
-        distances_list.append(spatial.distance.cityblock(base_list, samples_list[i]))
+        if distType == 'Manhattan':
+            distances_list.append(spatial.distance.cityblock(base_list, samples_list[i]))
+        elif distType == 'Euclidean':
+            distances_list.append(spatial.distance.euclidean(base_list, samples_list[i]))
+        elif distType == 'Chebyshev':
+            distances_list.append(spatial.distance.chebyshev(base_list, samples_list[i]))
+        else:
+            distances_list.append(spatial.distance.cosine(base_list, samples_list[i]))
 
     return distances_list
 
