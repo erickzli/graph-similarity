@@ -1,3 +1,4 @@
+import random
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -96,6 +97,8 @@ def efficiency(start, end, step, printTimes=True, plot=True):
         plt.xlabel('Number of nodes')
         plt.ylabel('Time used')
         plt.show()
+
+
 
 def random_distance(nodes, edges, sampleSize=100, sortBy='authority', distType='Manhattan'):
     '''
@@ -224,3 +227,65 @@ def normalization(score):
     score = score / denominator
 
     return score
+
+
+def get_random_capacity_graph(n, m, max_cap=10, directed=False):
+    """
+    Returns a `G_{n,m}` random graph.
+
+    In the `G_{n,m}` model, a graph is chosen uniformly at random from the set
+    of all graphs with `n` nodes and `m` edges.
+
+    This algorithm should be faster than :func:`dense_gnm_random_graph` for
+    sparse graphs.
+
+    Parameters
+    ----------
+    n : int
+        The number of nodes.
+    m : int
+        The number of edges.
+    seed : int, optional
+        Seed for random number generator (default=None).
+    directed : bool, optional (default=False)
+        If True return a directed graph
+
+    """
+    if directed:
+        G=nx.DiGraph()
+    else:
+        G=nx.Graph()
+    G.add_nodes_from(range(n))
+    G.name="gnm_random_graph(%s,%s)"%(n,m)
+
+    if n==1:
+        return G
+    max_edges=n*(n-1)
+    if not directed:
+        max_edges/=2.0
+    if m>=max_edges:
+        return complete_graph(n,create_using=G)
+
+    nlist=list(G.nodes())
+    edge_count=0
+
+    print(nlist)
+
+    while edge_count < m:
+        # generate random edge,u,v
+        u = random.choice(nlist)
+        v = random.choice(nlist)
+
+        if u==v or G.has_edge(u,v):
+            continue
+        else:
+            capa = random.randint(1, max_cap)
+            G.add_edge(u, v, capacity=capa)
+            # G.add_edge(u, v)
+            edge_count=edge_count+1
+
+    return G
+
+
+def get_max_flow(G, source, sink):
+    return nx.maximum_flow(G, source, sink)
