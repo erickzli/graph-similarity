@@ -217,7 +217,6 @@ def normalization(score):
     a numpy array of normalized score vector
 
     '''
-
     # the factor used for normalization
     denominator = 0.0
     for i in score:
@@ -229,8 +228,8 @@ def normalization(score):
     return score
 
 
-def get_random_capacity_graph(n, m, max_cap=10, directed=False):
-    """
+def get_random_capacity_graph(n, m, max_cap=10, max_wei=5, directed=False):
+    '''
     Returns a `G_{n,m}` random graph.
 
     In the `G_{n,m}` model, a graph is chosen uniformly at random from the set
@@ -250,42 +249,43 @@ def get_random_capacity_graph(n, m, max_cap=10, directed=False):
     directed : bool, optional (default=False)
         If True return a directed graph
 
-    """
+    '''
     if directed:
-        G=nx.DiGraph()
+        G = nx.DiGraph()
     else:
-        G=nx.Graph()
+        G = nx.Graph()
     G.add_nodes_from(range(n))
-    G.name="gnm_random_graph(%s,%s)"%(n,m)
+    G.name = "gnm_random_graph(%s,%s)"%(n, m)
 
-    if n==1:
+    if n == 1:
         return G
-    max_edges=n*(n-1)
+
+    max_edges = n * (n - 1)
+
     if not directed:
-        max_edges/=2.0
-    if m>=max_edges:
-        return complete_graph(n,create_using=G)
+        max_edges /= 2.0
 
-    nlist=list(G.nodes())
-    edge_count=0
+    if m >= max_edges:
+        return complete_graph(n, create_using=G)
 
-    print(nlist)
+    nlist = list(G.nodes())
+    edge_count = 0
 
     while edge_count < m:
         # generate random edge,u,v
         u = random.choice(nlist)
         v = random.choice(nlist)
 
-        if u==v or G.has_edge(u,v):
+        if u == v or G.has_edge(u,v):
             continue
         else:
             capa = random.randint(1, max_cap)
-            G.add_edge(u, v, capacity=capa)
-            # G.add_edge(u, v)
-            edge_count=edge_count+1
+            wei = random.randint(1, max_wei)
+            G.add_edge(u, v, capacity=capa, weight=wei)
+            edge_count += 1
 
     return G
 
 
-def get_max_flow(G, source, sink):
-    return nx.maximum_flow(G, source, sink)
+def get_max_flow_score(G, source, sink):
+    return nx.maximum_flow(G, source, sink)[0]
