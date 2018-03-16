@@ -228,7 +228,7 @@ def normalization(score):
     return score
 
 
-def get_random_capacity_graph(n, m, max_cap=10, max_wei=5, directed=False):
+def get_random_capacity_graph(n, m, max_cap=20, directed=False):
     '''
     Returns a `G_{n,m}` random graph.
 
@@ -280,8 +280,7 @@ def get_random_capacity_graph(n, m, max_cap=10, max_wei=5, directed=False):
             continue
         else:
             capa = random.randint(1, max_cap)
-            wei = random.randint(1, max_wei)
-            G.add_edge(u, v, capacity=capa, weight=wei)
+            G.add_edge(u, v, capacity=capa)
             edge_count += 1
 
     return G
