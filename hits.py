@@ -276,7 +276,7 @@ def get_random_capacity_graph(n, m, max_cap=10, max_wei=5, directed=False):
         u = random.choice(nlist)
         v = random.choice(nlist)
 
-        if u == v or G.has_edge(u,v):
+        if u == v or G.has_edge(u, v):
             continue
         else:
             capa = random.randint(1, max_cap)
