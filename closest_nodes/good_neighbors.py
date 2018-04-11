@@ -54,6 +54,10 @@ def get_random_capacity_undirected_graph(n, m, max_cap=20):
     return G
 
 def get_neighbor_edges(G, n):
+    '''
+    Input a graph and number of nodes
+    Return the list of the neighbors of nodes.
+    '''
     edge_list = G.edges.data('weight', default=1)
     neighbor = []
     [neighbor.append([]) for i in range(n)]
@@ -66,6 +70,12 @@ def get_neighbor_edges(G, n):
     return neighbor
 
 def closest_node(nl1, nl2):
+    '''
+    Input two neighbor lists of two graphs
+    nl1: the graph as subject
+    nl2: the graph as comparable
+    Return: list of the closest node list
+    '''
     closest_node_list = []
     count = 0
     for i in nl1:
