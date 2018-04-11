@@ -49,7 +49,7 @@ def get_random_capacity_directed_graph(n, m, max_cap=20):
             continue
         else:
             capa = random.randint(1, max_cap)
-            G.add_edge(u, v, capacity)
+            G.add_edge(u, v, capacity=capa)
             edge_count += 1
 
     return G
